@@ -1,0 +1,79 @@
+---
+title: "Haven van Antwerpen"
+author: "Mathieu Lepoutre"
+date: "7-10-2020"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Artificial Intelligence Project Mathieu Lepoutre
+
+**Inleiding**
+Antwerpen kampt met een serieus probleem dat veel geld en politiemacht vergt om op te lossen. Spijtig genoeg valt dit probleem niet zomaar lossen, het is hetzelfde als dweilen met de kraan open.
+
+Wat is het probleem ? Illegale goederen worden binnengesmokkeld via de Antwerpse haven. Een deel van de toevoer wordt doorgestuurd naar containerScanners. Deze zitten constant op volle capaciteit en kunnen verifiëren dat maar een klein deel positief is voor illegale middelen.
+
+Wat als we beter kunnen inschatten welke containers positief zullen zijn ? 
+Via machine learning kunnen we modellen maken die adhv datasets voorspellen of een container X illegale goederen bevat.
+
+Enkele eigenschappen van de Haven van Antweren;
+[Haven van Antwerpen Feiten en Cijfers]https://www.portofantwerp.com/sites/portofantwerp/files/Feiten_en_Cijfers_2019.pdf
+
+
+```{r }
+#packages laden
+#data laden !!
+```
+
+dataframe kable om eerste lijnen te laten zien en in handig overzicht te steken
+
+```{r }
+df
+kable(df)
+```
+
+**Machine learning**
+ 
+Supervised machine learning(data dat we al hebben)
+  - regression (linear, polynomial)
+  - decision tree
+  -random forset
+  
+  
+  -KNN : k-Nearest Neighbors
+  -Trees :  Classification and Regression Trees
+  -Logistic regression
+  -Naive-Bayes
+  -SVM : Support Vector Machines 
+  - LDA Linear Discriminant Analysis
+  
+  
+  
+```{r}
+
+```
+  
+##Model 1: KNN 
+**predictive analytics** -> voorspellen of een inbreng (persoon, container) een bepaalde waarde heeft of niet, gebaseerd op vorige data.
+
+het bouwen van een voorspellings model dat een waarde klassifieerd als x of y gebasseerd op data
+roadmap -> importeren data :(readcsv, str, eventueel kolommen hernoemen)
+            data opkuisen :(redundante kolommen eruit halen, data converteren in numeriek formaat, kolommen met missende data aanvullen, kolommen transformeren)
+            model opbouwen :data splitten (trainingset (hier hoger aantal als testset) en testset)
+            model trainen :(algoritmes toepassen zoals knn, ) op beide toepassen
+            model testen :table met testdata en echte data en zien of het klopt
+            efficientie verhogen!
+            
+```{r}
+
+```
+
+
+
+**Data Visualizatie**
+
+```{r}
+##Dash Ploty, ggplot, 
+```
+
