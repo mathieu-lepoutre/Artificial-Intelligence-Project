@@ -1,44 +1,44 @@
 ---
-title: "Haven van Antwerpen"
+title: "Artificial Intelligence Project"
 author: "Mathieu Lepoutre"
-date: "7-10-2020"
+date: "`r Sys.Date()`"
 output: html_document
 ---
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-## Artificial Intelligence Project Mathieu Lepoutre
 
-**Inleiding**
+## Inleiding
+
 Antwerpen kampt met een serieus probleem dat veel geld en politiemacht vergt om op te lossen. Spijtig genoeg valt dit probleem niet zomaar lossen, het is hetzelfde als dweilen met de kraan open.
 
 Wat is het probleem ? Illegale goederen worden binnengesmokkeld via de Antwerpse haven. Een deel van de toevoer wordt doorgestuurd naar containerScanners. Deze zitten constant op volle capaciteit en kunnen verifiëren dat maar een klein deel positief is voor illegale middelen.
 
-Wat als we beter kunnen inschatten welke containers positief zullen zijn ? 
+Wat als we beter kunnen inschatten welke containers positief zullen zijn ?
 Via machine learning kunnen we modellen maken die adhv datasets voorspellen of een container X illegale goederen bevat.
 
 Enkele eigenschappen van de Haven van Antweren;
 [Haven van Antwerpen Feiten en Cijfers]https://www.portofantwerp.com/sites/portofantwerp/files/Feiten_en_Cijfers_2019.pdf
-
 
 ```{r }
 #packages laden
 #data laden !!
 ```
 
-dataframe kable om eerste lijnen te laten zien en in handig overzicht te steken
+Dataframe kable om eerste lijnen te laten zien en in handig overzicht te steken
 
 ```{r }
 df
 kable(df)
 ```
 
-**Machine learning**
+### Machine learning
  
 Supervised machine learning(data dat we al hebben)
   - regression (linear, polynomial)
   - decision tree
-  -random forset
+  - Random Forest
   
   
   -KNN : k-Nearest Neighbors
@@ -54,8 +54,10 @@ Supervised machine learning(data dat we al hebben)
 
 ```
   
-##Model 1: KNN 
-**predictive analytics** -> voorspellen of een inbreng (persoon, container) een bepaalde waarde heeft of niet, gebaseerd op vorige data.
+## Model 1: KNN 
+### predictive analytics
+
+** -> voorspellen of een inbreng (persoon, container) een bepaalde waarde heeft of niet, gebaseerd op vorige data.
 
 het bouwen van een voorspellings model dat een waarde klassifieerd als x of y gebasseerd op data
 roadmap -> importeren data :(readcsv, str, eventueel kolommen hernoemen)
@@ -69,11 +71,10 @@ roadmap -> importeren data :(readcsv, str, eventueel kolommen hernoemen)
 
 ```
 
-
-
-**Data Visualizatie**
+### Data Visualizatie
 
 ```{r}
 ##Dash Ploty, ggplot, 
 ```
 
+> Mathieu, Probeer hier een beetje orde te scheppen zodat dit als een verslag leest. Zorg dat het ten alle tijde compileert.
