@@ -1,3 +1,7 @@
+## > RMD???
+## > DATA.TABLE, MAGRITTR
+## > WAAROM?
+
 #Oefening op ggplots om uit te zoeken welke mensen met welke variabelen de titanic crash hebben overleefd
 
 library(readr)

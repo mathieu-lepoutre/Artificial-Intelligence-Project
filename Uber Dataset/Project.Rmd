@@ -22,8 +22,16 @@ library(readr)
 
 Eerst een kleurenpalet maken dat we kunnen implementeren in de visualisatie.
 
+
+> OPKUISEN
+
 ```{r}
 ```
+
+> BRON DATA
+
+> INTENTIES??
+
 ```{r}
 
 
@@ -48,7 +56,7 @@ data_2014$year <- factor(year(data_2014$Date.Time))
 data_2014$dayofweek <- factor(wday(data_2014$Date.Time, label = TRUE))
 ```
 
-
+> GEBRUIK `data.table::fread`
 
 
 
