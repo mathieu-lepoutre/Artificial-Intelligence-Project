@@ -1,0 +1,7 @@
+"0","hour_data <- data_2014 %>%
+           group_by(hour) %>%
+               dplyr::summarize(Total = n()) 
+"
+"2","Error: Must group by variables found in `.data`.
+* Column `hour` is not found.
+"

@@ -1,0 +1,5 @@
+"0","train.f1 <- group_by(train_data, country_destination, gender) %>%
+    summarise(sum = n())
+"
+"2","`summarise()` regrouping output by 'country_destination' (override with `.groups` argument)
+"
