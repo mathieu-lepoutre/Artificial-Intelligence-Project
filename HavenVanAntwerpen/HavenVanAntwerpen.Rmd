@@ -11,22 +11,47 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Inleiding
 
-Antwerpen kampt met een serieus probleem dat veel geld en politiemacht vergt om op te lossen. Spijtig genoeg valt dit probleem niet zomaar lossen, het is hetzelfde als dweilen met de kraan open.
+De stad Antwerpen kampt met een langdurig probleem dat veel geld en politiemacht vergt om op te lossen. Spijtig genoeg valt dit probleem niet zomaar lossen, het is hetzelfde als dweilen met de kraan open.
 
-Wat is het probleem ? Illegale goederen worden binnengesmokkeld via de Antwerpse haven. Een deel van de toevoer wordt doorgestuurd naar containerScanners. Deze zitten constant op volle capaciteit en kunnen verifiëren dat maar een klein deel positief is voor illegale middelen.
+
+Mijn paper gaat over het oplossen van het volgende probleem dmw machine learning. 
+Illegale goederen worden binnengesmokkeld via de Antwerpse haven. Een deel van het gigantisch aantal containers dat per jaar binnekomt wordt doorgestuurd naar scanners. Deze zitten constant op volle capaciteit.
 
 Wat als we beter kunnen inschatten welke containers positief zullen zijn ?
-Via machine learning kunnen we modellen maken die adhv datasets voorspellen of een container X illegale goederen bevat.
+Via machine learning kunnen we modellen maken die op basis van  data kunnen voorspellen of een container illegale goederen bevat.
 
 Enkele eigenschappen van de Haven van Antweren;
 [Haven van Antwerpen Feiten en Cijfers]https://www.portofantwerp.com/sites/portofantwerp/files/Feiten_en_Cijfers_2019.pdf
 
+
 ```{r }
-#packages laden
-#data laden !!
+library(readr)
+library(readr)
+boten <- read.csv("boten.csv", header = TRUE, sep = ";")
+
+View(boten)
+
 ```
 
-Dataframe kable om eerste lijnen te laten zien en in handig overzicht te steken
+##Inhoudstafel
+
+# Project analyse:
+
+- Analyse van de probleemstelling
+- Scheiden van afhankelijke en onafhankelijke variabelen
+- Vastleggen performantie criteria
+- Maak beslissingen rond levenscyclus
+
+
+# Project uitvoering:
+
+- Verzamelen van datasets
+- Filteren, opkuisen en samenvoegen
+- Randomiseren
+- Trainen leeralgoritme
+- Instellen hyperparameters
+- Validatie
+- Testen
 
 ```{r }
 df
@@ -35,7 +60,7 @@ kable(df)
 
 ### Machine learning
  
-Supervised machine learning(data dat we al hebben)
+Supervised machine learning
   - regression (linear, polynomial)
   - decision tree
   - Random Forest
@@ -47,6 +72,8 @@ Supervised machine learning(data dat we al hebben)
   -Naive-Bayes
   -SVM : Support Vector Machines 
   - LDA Linear Discriminant Analysis
+  
+
   
   
   
@@ -74,7 +101,7 @@ roadmap -> importeren data :(readcsv, str, eventueel kolommen hernoemen)
 ### Data Visualizatie
 
 ```{r}
-##Dash Ploty, ggplot, 
+
 ```
 
-> Mathieu, Probeer hier een beetje orde te scheppen zodat dit als een verslag leest. Zorg dat het ten alle tijde compileert.
+
