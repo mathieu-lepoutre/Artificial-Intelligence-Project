@@ -1,0 +1,63 @@
+---
+title: "Uber Dataset"
+author: "Mathieu Lepoutre"
+date: "19-10-2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(ggthemes)
+library(lubridate)
+library(dplyr)
+library(tidyr)
+library(DT)
+library(scales)
+library(readr)
+
+```
+
+##Data visualiseren van het Ubersysteem in New York City.
+
+Eerst een kleurenpalet maken dat we kunnen implementeren in de visualisatie.
+
+
+> OPKUISEN
+
+```{r}
+```
+
+> BRON DATA
+
+> INTENTIES??
+
+```{r}
+
+
+apr_data <- read.csv("uber-raw-data-apr14.csv")
+may_data <- read.csv("uber-raw-data-may14.csv")
+jun_data <- read.csv("uber-raw-data-jun14.csv")
+jul_data <- read.csv("uber-raw-data-jul14.csv")
+aug_data <- read.csv("uber-raw-data-aug14.csv")
+sep_data <- read.csv("uber-raw-data-sep14.csv")
+
+data_2014 <- rbind(apr_data,may_data, jun_data, jul_data, aug_data, sep_data)
+
+data_2014$Date.Time <- as.POSIXct(data_2014$Date.Time, format = "%m/%d/%Y %H:%M:%S")
+
+data_2014$Time <- format(as.POSIXct(data_2014$Date.Time, format = "%m/%d/%Y %H:%M:%S"), format="%H:%M:%S")
+
+data_2014$Date.Time <- ymd_hms(data_2014$Date.Time)
+
+data_2014$day <- factor(day(data_2014$Date.Time))
+data_2014$month <- factor(month(data_2014$Date.Time, label = TRUE))
+data_2014$year <- factor(year(data_2014$Date.Time))
+data_2014$dayofweek <- factor(wday(data_2014$Date.Time, label = TRUE))
+```
+
+> GEBRUIK `data.table::fread`
+
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
