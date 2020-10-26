@@ -27,9 +27,18 @@ Enkele eigenschappen van de Haven van Antweren;
 ```{r }
 library(readr)
 library(readr)
-boten <- read.csv("boten.csv", header = TRUE, sep = ";")
+boten <- read.csv( file ="~/PositionBoats.csv" , header = TRUE, sep = ";")
 
 View(boten)
+str(boten)
+
+summary(boten)
+
+boten
+
+boten$AISTrajectPositionLongitude <- as.double(boten$AISTrajectPositionLongitude)
+
+boten$AISTrajectPositionSpeedOverGround <- as.numeric(boten$AISTrajectPositionSpeedOverGround)
 
 ```
 
