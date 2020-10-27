@@ -90,7 +90,7 @@ Supervised machine learning
 
 ```
   
-## Model 1: KNN 
+## Model 1: Kalman filter
 ### predictive analytics
 
 ** -> voorspellen of een inbreng (persoon, container) een bepaalde waarde heeft of niet, gebaseerd op vorige data.
@@ -103,7 +103,159 @@ roadmap -> importeren data :(readcsv, str, eventueel kolommen hernoemen)
             model testen :table met testdata en echte data en zien of het klopt
             efficientie verhogen!
             
+            
+            
+          
+            
+            
 ```{r}
+
+```
+  
+
+## Model 1: RNN 
+### Recuring Neural Network
+
+
+** Voor het voorspellen van een tijdseries adhv een recurrent neural network, maak ik gebruik van een Multivariate Time Series Forecasting with LSTMs.
+De volgende code is geschreven op basis van een r-studio blog.
+https://blogs.rstudio.com/ai/posts/2017-12-20-time-series-forecasting-with-recurrent-neural-networks/
+            
+```{r}
+data <- read.csv("~/GitHub/rnn/DataShipPositions.csv")
+
+ 
+
+ 
+ str(data)
+
+ summary(data)
+ 
+ ggplot(data, aes(x=1:nrow(data),y=AISTrajectPositionLongitude)) + geom_line()
+ ggplot(data, aes(x=1:nrow(data),y=AISTrajectPositionLatitude)) + geom_line()
+ 
+ data <- data.matrix(data[,-1])
+ 
+glimpse(data)
+
+ggplot(data[1:100,], aes(x=1:100,y=AISTrajectPositionLongitude)) + geom_line()
+
+##given data going as far back as lookback timesteps (a timestep is 10 minutes) 
+##and sampled every steps timesteps, can you predict the temperature in delay timesteps? You’ll use the following parameter values:
+  
+
+#lookback = 100
+#steps =3
+#delay = 10
+
+
+data <- data.matrix(data[,-1])
+
+train_data <- data[1:100,]
+mean <- apply(train_data, 2, mean)
+std <- apply(train_data, 2, sd)
+data <- scale(data, center = mean, scale = std)
+
+
+
+
+generator <- function(data, lookback, delay, min_index, max_index,
+                      shuffle = FALSE, batch_size = 5, step = 6) {
+  if (is.null(max_index))
+    max_index <- nrow(data) - delay - 1
+  i <- min_index + lookback
+  function() {
+    if (shuffle) {
+      rows <- sample(c((min_index+lookback):max_index), size = batch_size)
+    } else {
+      if (i + batch_size >= max_index)
+        i <<- min_index + lookback
+      rows <- c(i:min(i+batch_size-1, max_index))
+      i <<- i + length(rows)
+    }
+    
+    samples <- array(0, dim = c(length(rows),
+                                lookback / step,
+                                dim(data)[[-1]]))
+    targets <- array(0, dim = c(length(rows)))
+    
+    for (j in 1:length(rows)) {
+      indices <- seq(rows[[j]] - lookback, rows[[j]]-1,
+                     length.out = dim(samples)[[2]])
+      samples[j,,] <- data[indices,]
+      targets[[j]] <- data[rows[[j]] + delay,2]
+    }           
+    list(samples, targets)
+  }
+}
+
+
+
+
+
+
+lookback <- 100
+step <- 3
+delay <- 100
+batch_size <- 5
+
+
+
+train_gen <- generator(
+  data,
+  lookback = lookback,
+  delay = delay,
+  min_index = 1,
+  max_index = 100,
+  shuffle = TRUE,
+  step = step, 
+  batch_size = batch_size
+)
+
+val_gen = generator(
+  data,
+  lookback = lookback,
+  delay = delay,
+  min_index = 101,
+  max_index = 180,
+  step = step,
+  batch_size = batch_size
+)
+
+test_gen <- generator(
+  data,
+  lookback = lookback,
+  delay = delay,
+  min_index = 181,
+  max_index = NULL,
+  step = step,
+  batch_size = batch_size
+)
+
+val_steps <- (181 - 101 - lookback) / batch_size
+test_steps <- (nrow(data) - 181 - lookback) / batch_size
+
+
+model <- keras_model_sequential() %>% 
+  layer_flatten(input_shape = c(lookback / step, dim(data)[-1])) %>% 
+  layer_dense(units = 32, activation = "relu") %>% 
+  layer_dense(units = 1)
+
+
+
+model %>% compile(
+  optimizer = optimizer_rmsprop(),
+  loss = "mae"
+)
+
+
+history <- model %>% fit_generator(
+  train_gen,
+  steps_per_epoch = 50,
+  epochs = 2,
+  validation_data = val_gen,
+  validation_steps = val_steps
+)
 
 ```
 
