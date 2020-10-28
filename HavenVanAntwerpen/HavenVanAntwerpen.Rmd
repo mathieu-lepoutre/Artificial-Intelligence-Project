@@ -7,38 +7,43 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(keras)
+library(tidyverse)
+library(caret)
+library(tibble)
+library(readr)
+
+
 ```
 
 ## Inleiding
 
-De stad Antwerpen kampt met een langdurig probleem dat veel geld en politiemacht vergt om op te lossen. Spijtig genoeg valt dit probleem niet zomaar lossen, het is hetzelfde als dweilen met de kraan open.
+De stad Antwerpen kampt met een langdurig probleem dat veel geld en politiemacht opeist. De drugs toevoer is nog nooit zo hoog geweest via de Antwerpse haven. Spijtig genoeg valt dit probleem niet zomaar lossen, het is hetzelfde als dweilen met de kraan open.
 
 
-Mijn paper gaat over het oplossen van het volgende probleem dmw machine learning. 
-Illegale goederen worden binnengesmokkeld via de Antwerpse haven. Een deel van het gigantisch aantal containers dat per jaar binnekomt wordt doorgestuurd naar scanners. Deze zitten constant op volle capaciteit.
+Mijn paper gaat over het oplossen volgend probleem door middel van machine learning. 
+Illegale goederen worden binnengesmokkeld via de Antwerpse haven in containers. Een deel van het gigantisch aantal containers dat per jaar binnenkomt wordt doorgestuurd naar scanners. Deze zitten constant op volle capaciteit en halen maar een laag percentage positieve containers eruit.
 
 Wat als we beter kunnen inschatten welke containers positief zullen zijn ?
 Via machine learning kunnen we modellen maken die op basis van  data kunnen voorspellen of een container illegale goederen bevat.
 
-Enkele eigenschappen van de Haven van Antweren;
+Enkele statistieken van de Haven van Antweren;
 [Haven van Antwerpen Feiten en Cijfers]https://www.portofantwerp.com/sites/portofantwerp/files/Feiten_en_Cijfers_2019.pdf
 
 
 ```{r }
-library(readr)
-library(readr)
-boten <- read.csv( file ="~/PositionBoats.csv" , header = TRUE, sep = ";")
+data <- read.csv("~/GitHub/rnn/DataShipPositions.csv")
 
-View(boten)
-str(boten)
+View(data)
+str(data)
 
-summary(boten)
+summary(data)
 
-boten
+data
 
-boten$AISTrajectPositionLongitude <- as.double(boten$AISTrajectPositionLongitude)
 
-boten$AISTrajectPositionSpeedOverGround <- as.numeric(boten$AISTrajectPositionSpeedOverGround)
 
 ```
 
@@ -62,56 +67,13 @@ boten$AISTrajectPositionSpeedOverGround <- as.numeric(boten$AISTrajectPositionSp
 - Validatie
 - Testen
 
-```{r }
-df
-kable(df)
-```
-
-### Machine learning
- 
-Supervised machine learning
-  - regression (linear, polynomial)
-  - decision tree
-  - Random Forest
-  
-  
-  -KNN : k-Nearest Neighbors
-  -Trees :  Classification and Regression Trees
-  -Logistic regression
-  -Naive-Bayes
-  -SVM : Support Vector Machines 
-  - LDA Linear Discriminant Analysis
-  
-
-  
-  
   
 ```{r}
 
 ```
-  
-## Model 1: Kalman filter
-### predictive analytics
+     
+            
 
-** -> voorspellen of een inbreng (persoon, container) een bepaalde waarde heeft of niet, gebaseerd op vorige data.
-
-het bouwen van een voorspellings model dat een waarde klassifieerd als x of y gebasseerd op data
-roadmap -> importeren data :(readcsv, str, eventueel kolommen hernoemen)
-            data opkuisen :(redundante kolommen eruit halen, data converteren in numeriek formaat, kolommen met missende data aanvullen, kolommen transformeren)
-            model opbouwen :data splitten (trainingset (hier hoger aantal als testset) en testset)
-            model trainen :(algoritmes toepassen zoals knn, ) op beide toepassen
-            model testen :table met testdata en echte data en zien of het klopt
-            efficientie verhogen!
-            
-            
-            
-          
-            
-            
-```{r}
-
-```
-  
 
 ## Model 1: RNN 
 ### Recuring Neural Network
@@ -119,10 +81,10 @@ roadmap -> importeren data :(readcsv, str, eventueel kolommen hernoemen)
 
 ** Voor het voorspellen van een tijdseries adhv een recurrent neural network, maak ik gebruik van een Multivariate Time Series Forecasting with LSTMs.
 De volgende code is geschreven op basis van een r-studio blog.
-https://blogs.rstudio.com/ai/posts/2017-12-20-time-series-forecasting-with-recurrent-neural-networks/
+
             
 ```{r}
-data <- read.csv("~/GitHub/rnn/DataShipPositions.csv")
+
 
  
 
@@ -140,7 +102,7 @@ glimpse(data)
 
 ggplot(data[1:100,], aes(x=1:100,y=AISTrajectPositionLongitude)) + geom_line()
 
-##given data going as far back as lookback timesteps (a timestep is 10 minutes) 
+##
 ##and sampled every steps timesteps, can you predict the temperature in delay timesteps? You’ll use the following parameter values:
   
 
@@ -259,10 +221,35 @@ history <- model %>% fit_generator(
 
 ```
 
-### Data Visualizatie
+  
+## Model 2: Kalman filter
+
+
+## packages: dlm, KFAS, MARSS, astsa, KFKSDS
+
+##koers, snelheid en positie van een voertuig kunnen worden gebruikt om een toekomstige positie te voorspellen.
+            
+
 
 ```{r}
 
 ```
 
-
+            
+    ### Machine learning
+ 
+Supervised machine learning
+  - regression (linear, polynomial)
+  - decision tree
+  - Random Forest
+  
+  
+  -KNN : k-Nearest Neighbors
+  -Trees :  Classification and Regression Trees
+  -Logistic regression
+  -Naive-Bayes
+  -SVM : Support Vector Machines 
+  - LDA Linear Discriminant Analysis
+          
+          
+       
