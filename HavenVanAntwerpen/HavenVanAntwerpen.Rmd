@@ -15,17 +15,27 @@ library(caret)
 library(tibble)
 library(readr)
 library(tensorflow)
-
+library(data.table)
+library(magrittr)
+library(anytime)
 
 
 ```
+
+
+todo;
+-voorspellen v anomaliën
+-spelen met andere attributen
+#as.Date
+#as.posixct
+#haversign
 
 ## Inleiding
 
 De stad Antwerpen kampt met een langdurig probleem dat veel geld en politiemacht opeist. De drugs toevoer is nog nooit zo hoog geweest via de Antwerpse haven. Spijtig genoeg valt dit probleem niet zomaar lossen, het is hetzelfde als dweilen met de kraan open.
 
 
-Mijn paper gaat over het oplossen volgend probleem door middel van machine learning. 
+Mijn paper gaat over het oplossen van volgend probleem door middel van machine learning. 
 Illegale goederen worden binnengesmokkeld via de Antwerpse haven in containers. Een deel van het gigantisch aantal containers dat per jaar binnenkomt wordt doorgestuurd naar scanners. Deze zitten constant op volle capaciteit en halen maar een laag percentage positieve containers eruit.
 
 Wat als we beter kunnen inschatten welke containers positief zullen zijn ?
@@ -36,17 +46,25 @@ Enkele statistieken van de Haven van Antweren;
 
 
 ```{r }
-data <- read.csv("~/GitHub/Artificial-Intelligence-Project/HavenVanAntwerpen/DataShipPositions.csv")
-
-View(data)
-str(data)
+data <- fread("DataShipPositions.csv")
 
 summary(data)
 
-data
 
 
 
+
+```
+
+
+
+
+```{r}
+data[,AISTrajectPositionTimeStamp:= AISTrajectPositionTimeStamp %>% as.POSIXct]
+
+data[,AISTrajectPositionTimeStamp_num:= AISTrajectPositionTimeStamp %>% as.numeric]
+data <- data[AISTrajectPositionTimeStamp %>% order]
+data$AISTrajectPositionTimeStamp %>% plot
 ```
 
 ##Inhoudstafel
@@ -84,13 +102,13 @@ data
 Dit is een veel-tot-één RNN situatie, waar er een sequentie is van gps waarden (tijd, lat, long) van lengte Tx(de hoeveelheid waarden waar in de geschiedenis wordt gekeken om
 de volgende waarde te voorspellen). 
 
-Elke deel van de RNN laag zal een gps reading outputten, en die output wordt gebruikt voor de volgende laag.
+Elke deel van de RNN laag zal een gps reading out-putten, en die output wordt gebruikt voor de volgende laag.
 
 ```{r}
 
 
  
-
+ df.as.Date(df$Date, "%m/%d/%Y %H:%M:%S")
  
 str(data)
 
