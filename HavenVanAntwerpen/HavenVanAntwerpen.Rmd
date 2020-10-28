@@ -14,6 +14,8 @@ library(tidyverse)
 library(caret)
 library(tibble)
 library(readr)
+library(tensorflow)
+
 
 
 ```
@@ -34,7 +36,7 @@ Enkele statistieken van de Haven van Antweren;
 
 
 ```{r }
-data <- read.csv("~/GitHub/rnn/DataShipPositions.csv")
+data <- read.csv("~/GitHub/Artificial-Intelligence-Project/HavenVanAntwerpen/DataShipPositions.csv")
 
 View(data)
 str(data)
@@ -72,39 +74,38 @@ data
 
 ```
      
-            
-
 
 ## Model 1: RNN 
-### Recuring Neural Network
+### Recurrent Neural Network
 
 
 ** Voor het voorspellen van een tijdseries adhv een recurrent neural network, maak ik gebruik van een Multivariate Time Series Forecasting with LSTMs.
-De volgende code is geschreven op basis van een r-studio blog.
 
-            
+Dit is een veel-tot-één RNN situatie, waar er een sequentie is van gps waarden (tijd, lat, long) van lengte Tx(de hoeveelheid waarden waar in de geschiedenis wordt gekeken om
+de volgende waarde te voorspellen). 
+
+Elke deel van de RNN laag zal een gps reading outputten, en die output wordt gebruikt voor de volgende laag.
+
 ```{r}
 
 
  
 
  
- str(data)
+str(data)
 
- summary(data)
+summary(data)
  
- ggplot(data, aes(x=1:nrow(data),y=AISTrajectPositionLongitude)) + geom_line()
- ggplot(data, aes(x=1:nrow(data),y=AISTrajectPositionLatitude)) + geom_line()
+ggplot(data, aes(x=1:nrow(data),y=AISTrajectPositionLongitude)) + geom_line()
+ggplot(data, aes(x=1:nrow(data),y=AISTrajectPositionLatitude)) + geom_line()
  
- data <- data.matrix(data[,-1])
+data <- data.matrix(data[,-1])
  
 glimpse(data)
 
 ggplot(data[1:100,], aes(x=1:100,y=AISTrajectPositionLongitude)) + geom_line()
 
-##
-##and sampled every steps timesteps, can you predict the temperature in delay timesteps? You’ll use the following parameter values:
-  
+
 
 #lookback = 100
 #steps =3
