@@ -106,9 +106,7 @@ Elke deel van de RNN laag zal een gps reading out-putten, en die output wordt ge
 
 ```{r}
 
-
- 
- df.as.Date(df$Date, "%m/%d/%Y %H:%M:%S")
+df.as.Date(df$Date, "%m/%d/%Y %H:%M:%S")
  
 str(data)
 
@@ -125,6 +123,12 @@ ggplot(data[1:100,], aes(x=1:100,y=AISTrajectPositionLongitude)) + geom_line()
 
 
 
+```
+
+
+
+```{r}
+
 #lookback = 100
 #steps =3
 #delay = 10
@@ -136,9 +140,10 @@ train_data <- data[1:100,]
 mean <- apply(train_data, 2, mean)
 std <- apply(train_data, 2, sd)
 data <- scale(data, center = mean, scale = std)
+```
 
 
-
+```{r}
 
 generator <- function(data, lookback, delay, min_index, max_index,
                       shuffle = FALSE, batch_size = 5, step = 6) {
@@ -171,16 +176,20 @@ generator <- function(data, lookback, delay, min_index, max_index,
 }
 
 
+```
 
 
-
-
+```{r}
 lookback <- 100
 step <- 3
 delay <- 100
 batch_size <- 5
 
 
+```
+
+
+```{r}
 
 train_gen <- generator(
   data,
@@ -192,6 +201,11 @@ train_gen <- generator(
   step = step, 
   batch_size = batch_size
 )
+```
+
+
+```{r}
+
 
 val_gen = generator(
   data,
@@ -202,7 +216,11 @@ val_gen = generator(
   step = step,
   batch_size = batch_size
 )
+```
 
+  
+  
+```{r}
 test_gen <- generator(
   data,
   lookback = lookback,
@@ -212,10 +230,18 @@ test_gen <- generator(
   step = step,
   batch_size = batch_size
 )
+```
+
+
+```{r}
 
 val_steps <- (181 - 101 - lookback) / batch_size
 test_steps <- (nrow(data) - 181 - lookback) / batch_size
 
+```
+
+
+```{r}
 
 model <- keras_model_sequential() %>% 
   layer_flatten(input_shape = c(lookback / step, dim(data)[-1])) %>% 
@@ -223,12 +249,20 @@ model <- keras_model_sequential() %>%
   layer_dense(units = 1)
 
 
+```
+  
+  
+```{r}
 
 model %>% compile(
   optimizer = optimizer_rmsprop(),
   loss = "mae"
 )
 
+```
+  
+  
+```{r}
 
 history <- model %>% fit_generator(
   train_gen,
@@ -237,9 +271,7 @@ history <- model %>% fit_generator(
   validation_data = val_gen,
   validation_steps = val_steps
 )
-
 ```
-
   
 ## Model 2: Kalman filter
 
