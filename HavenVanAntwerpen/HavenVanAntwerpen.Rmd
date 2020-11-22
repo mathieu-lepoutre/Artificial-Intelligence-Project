@@ -41,7 +41,7 @@ Enkele statistieken van de Haven van Antweren;
 
 
 ```{r }
-data <- fread("schiptweecsv.csv")
+data <- fread("schipdriecsv.csv")
 
 summary(data)
 
@@ -56,7 +56,7 @@ data[,AISTrajectPositionTimeStamp:= AISTrajectPositionTimeStamp %>% as.POSIXct]
 data[,AISTrajectPositionTimeStamp_num:= AISTrajectPositionTimeStamp %>% as.numeric]
 data <- data[AISTrajectPositionTimeStamp %>% order]
 data$AISTrajectPositionTimeStamp %>% plot
-data <- data[1:350,]
+data <- data[1:200,]
 data
 count(data)
 
