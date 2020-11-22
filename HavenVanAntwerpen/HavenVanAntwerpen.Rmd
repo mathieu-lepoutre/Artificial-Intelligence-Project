@@ -23,12 +23,7 @@ library(anytime)
 ```
 
 
-todo;
--voorspellen v anomaliën
--spelen met andere attributen
-#as.Date
-#as.posixct
-#haversign
+
 
 ## Inleiding
 
@@ -46,13 +41,9 @@ Enkele statistieken van de Haven van Antweren;
 
 
 ```{r }
-data <- fread("DataShipPositions.csv")
+data <- fread("schiptweecsv.csv")
 
 summary(data)
-
-
-
-
 
 ```
 
@@ -65,6 +56,15 @@ data[,AISTrajectPositionTimeStamp:= AISTrajectPositionTimeStamp %>% as.POSIXct]
 data[,AISTrajectPositionTimeStamp_num:= AISTrajectPositionTimeStamp %>% as.numeric]
 data <- data[AISTrajectPositionTimeStamp %>% order]
 data$AISTrajectPositionTimeStamp %>% plot
+data <- data[1:350,]
+data
+count(data)
+
+```
+to do; definitie traject
+
+```{r}
+mean(data$AISTrajectPositionSpeedOverGround)
 ```
 
 ##Inhoudstafel
@@ -89,7 +89,7 @@ data$AISTrajectPositionTimeStamp %>% plot
 
   
 ```{r}
-
+count(data)
 ```
      
 
@@ -271,22 +271,12 @@ history <- model %>% fit_generator(
   validation_data = val_gen,
   validation_steps = val_steps
 )
+
+history
 ```
   
-## Model 2: Kalman filter
-
-
-## packages: dlm, KFAS, MARSS, astsa, KFKSDS
-
-##koers, snelheid en positie van een voertuig kunnen worden gebruikt om een toekomstige positie te voorspellen.
-            
-
-
-```{r}
-
-```
-
-            
+  
+         
     ### Machine learning
  
 Supervised machine learning
