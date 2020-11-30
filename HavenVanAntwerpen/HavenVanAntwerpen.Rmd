@@ -18,6 +18,7 @@ library(tensorflow)
 library(data.table)
 library(magrittr)
 library(anytime)
+library(pandas)
 
 
 ```
@@ -41,9 +42,9 @@ Enkele statistieken van de Haven van Antweren;
 
 
 ```{r }
-data <- fread("schipdriecsv.csv")
+ship_data <- fread("schipdriecsv.csv")
 
-summary(data)
+summary(ship_data)
 
 ```
 
@@ -51,17 +52,31 @@ summary(data)
 
 
 ```{r}
-data[,AISTrajectPositionTimeStamp:= AISTrajectPositionTimeStamp %>% as.POSIXct]
 
-data[,AISTrajectPositionTimeStamp_num:= AISTrajectPositionTimeStamp %>% as.numeric]
-data <- data[AISTrajectPositionTimeStamp %>% order]
-data$AISTrajectPositionTimeStamp %>% plot
-data <- data[1:200,]
-data
-count(data)
+ship_data
+
+ship_data[,AISTrajectPositionTimeStamp:= AISTrajectPositionTimeStamp %>% as.POSIXct]
+
+ship_data[,AISTrajectPositionTimeStamp_num:= AISTrajectPositionTimeStamp %>% as.numeric]
+ship_data <- ship_data[AISTrajectPositionTimeStamp %>% order]
+ship_data$AISTrajectPositionTimeStamp %>% plot
+ship_data <- data[1:200,]
+ship_data
+count(ship_data)
 
 ```
 to do; definitie traject
+
+
+
+```{python}
+
+
+
+
+
+```
+
 
 ```{r}
 mean(data$AISTrajectPositionSpeedOverGround)
