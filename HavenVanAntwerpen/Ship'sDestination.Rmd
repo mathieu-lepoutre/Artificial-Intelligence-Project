@@ -1,10 +1,9 @@
 ---
-title: "markdown"
+title: "DestinationShip"
 author: "Mathieu Lepoutre"
-date: "28-11-2020"
+date: "1-12-2020"
 output: html_document
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
@@ -30,31 +29,6 @@ from IPython.display import Image
 
 ## Predicting a ship's destination based on it's beginning's latitude and longitude.
 
-Wouldn't it be great if we could predict a ship's destination ?
-
-In this paper I will try to taccle this challenge.
-
-For input there is a huge unprocessed dataset containing a ship's ID and it's total trajectory. 
-Because a ship's owner will sometimes cancel a ship's beacon, the data isn't always that accurate.
-
-First I try process the data, this is a challenge made up of two steps. I made a paint picture to explain it visually.
-
-The first step is to split the data based on a time delta. 
-
-You have to ask yourself these question, "why is the time difference between two registries sometimes a big difference ?"
-
-"When would an owner stop the beacon from sending location data ?"
-If the owner is sleeping, or when it's docked. This makes the data inaccurate. That's why I first split the dataset on a timedelta. 
-The total imaginary trajectory of a ship will be split in real trajectories.
-When the ship hasn't transmitted in a couple of hours, you can be sure of it that he pulled the plug out of the beacon.
-
-After this split you have a ship's trajectory that also included when the stops. This is why the next split will be on speed delta.
-If a ship's speed is under a certain threshold, the ship has reached a destination.
-
-To train my neural network I need to be sure the data is in the correct format.
-The preferable format is the ship's id, and each row representing it's start latitude and longitude, and it's stop latitude and longitude. The data should also contain
-the time delta between the two positions.
-
 
 
 ```{python}
@@ -65,13 +39,12 @@ unprocessed = pd.read_csv("schipsdataset.csv",sep=';')
 unprocessed.head(10)
 ```
 
-This visually explains the steps I'm going to partake.
+
 ```{python}
 Image(filename='preprocessing.png')
 ```
 
-Changeable variables to alter the output file. If you believe the time delta when the owner puts off the beacon is shorter or longer, this can be 
-adjusted here. The same with the speed variable.
+
 ```{python}
 timedelta = 500000 #130uur
 speedDelta = 2     #2 meter per seconde
@@ -82,6 +55,7 @@ speedDelta = 2     #2 meter per seconde
 ```{python}
 f = open("schipsdataset.csv")
 ```
+
 
 ```{python}
 fileData = f.readlines()
@@ -105,6 +79,7 @@ for d in fileData:
   
 List.append(data[1])
 ```
+
 
 
 
@@ -165,104 +140,11 @@ for i in range(2,len(data)):
         List.append(data[i])
 ```
 
+
 ```{python}
 with open('output.csv', mode='w') as output_file:
     output_writer = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     for data in outputList:        
         output_writer.writerow(data)
 ```
-
-
-```{python}
-sdata = pd.read_csv("output.csv",sep=',',names=["shipid","routeid","startLongitude","startLatitude","endlongitude","endlatitude","timedelta"])
-```
-
-
-
-```{python}
-sdata=sdata[sdata.timedelta!=0]
-sdata=sdata[sdata.timedelta>0]
-```
-
-```{python}
-sdata.head(10)
-```
-
-```{python}
-sdata.to_csv(r'processeddata.csv',sep='\t', index=False)
-```
-
-The data has been preprocessed. 
-
-Each ship's route is now a single row, with its ID, the start latitude and longitude, the end latitude and longitude and the time delta.
-
-Now it's time to start exploring recurrent neural networks, and specifically long short term memory neural networks.
-
-The goal is to predict a ship's position based on it's start data.
-
-This can be archieved by training the model on the thousands of trajects that happened in the past.
-
-
-```{r}
-pdata <- fread("processeddata.csv")
-
-dim(pdata)
-
-str(pdata)
-
-summary(pdata)
-
-view(pdata)
-```
-
-
-
-
-
-```{r}
-pdata$shipid %>% plot
-
-```
-
-
-```{r}
-TRAIN_SIZE = 1500
-MAX_TEST_SIZE = 2000
-
-
-```
-
-
-```{r}
-pdata <- data.matrix(pdata[,-1])
-train_data <- data[1:TRAIN_SIZE,]
-```
-
-```{r}
-mean <- apply(train_data, 2, mean)
-std <- apply(train_data, 2, sd)
-pdata <- scale(pdata, center = mean, scale = std)
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
