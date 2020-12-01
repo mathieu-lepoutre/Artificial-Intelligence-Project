@@ -32,20 +32,29 @@ from IPython.display import Image
 
 Wouldn't it be great if we could predict a ship's destination ?
 
-In this paper I try to taccle this challenge.
+In this paper I will try to taccle this challenge.
 
 For input there is a huge unprocessed dataset containing a ship's ID and it's total trajectory. 
-Because a ship's owner will sometimes cancel the beacon that the ship sends, the data isn't always that accurate.
+Because a ship's owner will sometimes cancel a ship's beacon, the data isn't always that accurate.
 
-What I try to do as a first challenge is two things. I made a paint picture to explain it visually.
+First I try process the data, this is a challenge made up of two steps. I made a paint picture to explain it visually.
 
-When would an owner stop the beacon from sending location data ? if sleeping, or when it's docked. That's why I first split the dataset on a timedelta. 
+The first step is to split the data based on a time delta. 
+
+You have to ask yourself these question, "why is the time difference between two registries sometimes a big difference ?"
+
+"When would an owner stop the beacon from sending location data ?"
+If the owner is sleeping, or when it's docked. This makes the data inaccurate. That's why I first split the dataset on a timedelta. 
+The total imaginary trajectory of a ship will be split in real trajectories.
 When the ship hasn't transmitted in a couple of hours, you can be sure of it that he pulled the plug out of the beacon.
 
-After this split you have a ship's trajectory that includes when it stops. But that's what I want to predict. To train my neural network I need to be sure
-the data is in the correct format.
+After this split you have a ship's trajectory that also included when the stops. This is why the next split will be on speed delta.
+If a ship's speed is under a certain threshold, the ship has reached a destination.
 
-So after the first split on time, a second split needs to be made. This time it will be on speed. When a ship's speed is under a certain threshold, it most likely stopped. This threshold can't be zero, since there is always a bit of current. 
+To train my neural network I need to be sure the data is in the correct format.
+The preferable format is the ship's id, and each row representing it's start latitude and longitude, and it's stop latitude and longitude. The data should also contain
+the time delta between the two positions.
+
 
 
 ```{python}
