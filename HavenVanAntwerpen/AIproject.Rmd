@@ -71,10 +71,10 @@ This visually explains the steps I'm going to partake.
 Image(filename='preprocessing.png')
 ```
 
-Changeable variables to alter the output file. If you believe the time delta when the owner puts off the beacon is shorter or longer, this can be 
-adjusted here. The same with the speed variable.
+Changeable variables to alter the output file. If you believe the time delta when the owner puts off the beacon is shorter or longer, this can be adjusted here. This can also be done with the speed delta.
+
 ```{python}
-timedelta = 500000 #130uur
+timedelta = 100000 #27 uur
 speedDelta = 2     #2 meter per seconde
 ```
 
@@ -205,7 +205,7 @@ Now it's time to start exploring recurrent neural networks, and specifically lon
 
 The goal is to predict a ship's position based on it's start data.
 
-This can be archieved by training the model on the thousands of trajects that happened in the past.
+This can be achieved by training the model on the thousands of trajects that happened in the past.
 
 
 ```{r}
