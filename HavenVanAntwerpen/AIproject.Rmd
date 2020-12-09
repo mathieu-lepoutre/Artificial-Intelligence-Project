@@ -228,6 +228,14 @@ pdata$shipid %>% plot
 
 ```
 
+todo;
+
+- neuraal netwerk
+  -ship destination
+  -time delta
+  
+- meta data toevoegen
+
 
 ```{r}
 TRAIN_SIZE = 1500
