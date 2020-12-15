@@ -35,7 +35,7 @@ Wouldn't it be great if we could predict a ship's destination ?
 In this paper I will try to tackle this challenge.
 
 For input there is an unprocessed dataset containing a ship's ID and it's total trajectory.
-hTe data isn't always that accurate since a ship's owner will sometimes cancel a ship's beacon.
+The data isn't always that accurate since a ship's owner will sometimes cancel a ship's beacon.
 
 First the data will be processed, this challenge is made up of two steps. I made a paint picture to explain it visually.
 
@@ -210,7 +210,9 @@ This can be achieved by training the model on the thousands of trajects that hap
 
 
 ```{r}
-pdata <- fread("processeddata.csv")
+py$sdata 
+
+#pdata <- fread("processeddata.csv")
 
 dim(pdata)
 
@@ -256,9 +258,7 @@ std <- apply(train_data, 2, sd)
 pdata <- scale(pdata, center = mean, scale = std)
 ```
 
-```{r}
 
-```
 
 ```{r}
 
