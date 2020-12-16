@@ -24,7 +24,7 @@ use_python("C:\\Program Files\\Python37")
 ```{python}
 import datetime
 import csv
-import pandas
+import pandas as pd
 from IPython.display import Image
 ```
 
