@@ -58,6 +58,7 @@ To train my neural network I need to be sure the data is in the correct format.
 The preferable format is the ship's start position (latitude and longitude), the ship's end position (latitude and longitude) and the time delta between the two positions.
 
 
+## Processing the unprocessed data
 
 ```{python}
 unprocessed = pd.read_csv("schipsdataset.csv",sep=';')
@@ -108,7 +109,6 @@ for d in fileData:
   
 List.append(data[1])
 ```
-
 
 
 
@@ -233,6 +233,7 @@ str(data)
 summary(data)
 ```
 
+## Neural networks
 
 First we need to split the dataset into training and test sets. The model will be trained on the trained set, and then the model can start predicting on the test set.
 The training control needs to be defined.
@@ -304,6 +305,9 @@ colnames(res_nn) = c("Pred_Lon","Pred_Lat","actual_Lon","actual_Lat")
 ```{r}
 res_nn
 ```
+
+
+
 
 
 
