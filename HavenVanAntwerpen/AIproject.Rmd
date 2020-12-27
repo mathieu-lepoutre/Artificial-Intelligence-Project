@@ -208,20 +208,18 @@ sdata.head(10)
 sdata.to_csv(r'processeddata.csv',sep='\t', index=False)
 ```
 
-The data has been processed.
+The data has now been processed.
 
-Each ship's route is now a single row, with its ID, the start latitude and longitude, the end latitude and longitude and the time delta.
+Each ship's route is now a single row, with its ID, starting latitude & longitude and its end latitude & longitude. The time delta between two destinations is also included.
 
 
 Now it's time to start exploring neural networks.
 
-The goal is to accurately check if the model can predict a correct destination latitude and longitude, based on the start latitude and longitude. This
+The goal is to accurately predict a correct destination's latitude and longitude, based on the start latitude and longitude. This
 will be achieved by training the model on the thousands of trajects that happened in the past.
 
 
 This prediction can be useful in many applications and situations.
-
-
 
 
 ```{r}
@@ -236,8 +234,8 @@ summary(data)
 ```
 
 
-First we need to split the dataset into training and test sets The model will be trained on the trained set, and the accuracy will be tested on the test set.
-Then the training control will be defined.
+First we need to split the dataset into training and test sets. The model will be trained on the trained set, and then the model can start predicting on the test set.
+The training control needs to be defined.
 
 There are lots of neural networks. The first one is the nnet neural network.
 
