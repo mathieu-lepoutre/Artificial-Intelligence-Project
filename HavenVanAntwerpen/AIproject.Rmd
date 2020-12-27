@@ -150,9 +150,6 @@ def splitList(List):
                                     outputList.append(d)
                                     newList = []
                                     newList.append(List[i])
-                                    
-                                    
-                                
 ```
 
 
@@ -173,12 +170,9 @@ for i in range(2,len(data)):
 
 
 ```{python}
-```
-
-
-```{python}
 List.append(data[i])
 ```
+
 
 ```{python}
 with open('output.csv', mode='w') as output_file:
@@ -223,14 +217,13 @@ This prediction can be useful in many applications and situations.
 
 
 ```{r}
+pdata <- read.csv("processeddata.csv", sep = "")
 
-data <- read.csv("processeddata.csv", sep = "")
+dim(pdata)
 
-dim(data)
+str(pdata)
 
-str(data)
-
-summary(data)
+summaryp(data)
 ```
 
 ## Neural networks
@@ -244,17 +237,17 @@ By setting the seed, the partition will be reproducible.
 
 
 ```{r}
-data = data[1:10000,]
+pdata = pdata[1:10000,]
 set.seed(1)
 
 ```
 
 
 ```{r}
-smp_size <- floor(0.70 * nrow(data))
-train_ind <- sample(seq_len(nrow(data)), size = smp_size)
-train <- data[train_ind, ]
-test <- data[-train_ind, ]
+smp_size <- floor(0.70 * nrow(pdata))
+train_ind <- sample(seq_len(nrow(pdata)), size = smp_size)
+train <- pdata[train_ind, ]
+test <- pdata[-train_ind, ]
 
 
 ```
