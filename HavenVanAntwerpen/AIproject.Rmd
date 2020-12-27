@@ -16,6 +16,9 @@ library(anytime)
 library(igraph)
 library(sp)
 library(reticulate)
+library(lattice)
+library(ggplot2)
+library(caret)
 
 
 use_python("C:\\Program Files\\Python37")
@@ -166,7 +169,15 @@ for i in range(2,len(data)):
     else:
         splitList(List)
         List = []
-        List.append(data[i])
+```
+
+
+```{python}
+```
+
+
+```{python}
+List.append(data[i])
 ```
 
 ```{python}
@@ -202,107 +213,98 @@ The data has been processed.
 Each ship's route is now a single row, with its ID, the start latitude and longitude, the end latitude and longitude and the time delta.
 
 
-Now it's time to start exploring recurrent neural networks, and specifically long short term memory neural networks.
+Now it's time to start exploring neural networks.
 
-The goal is to predict a ship's destination based on it's start data.
+The goal is to accurately check if the model can predict a correct destination latitude and longitude, based on the start latitude and longitude. This
+will be achieved by training the model on the thousands of trajects that happened in the past.
 
-This can be achieved by training the model on the thousands of trajects that happened in the past.
+
+This prediction can be usefull in many applications and situations.
+
+
 
 
 ```{r}
-py$sdata 
 
-pdata <- fread("processeddata.csv")
+data <- read.csv("processeddata.csv", sep = "")
 
-dim(pdata)
+dim(data)
 
-str(pdata)
+str(data)
 
-summary(pdata)
+summary(data)
+```
+
+First we need to split the dataset into training and test sets The model will be trained on the trained set, and the accuracy will be tested on the test set.
+Then the training control will be defined.
+
+There are lots of neural networks. The first one is the nnet neural network.
+
+By setting the seed, the partition will be reproducible.
+
+
+```{r}
+data = data[1:10000,]
+set.seed(1)
 
 ```
 
 
-
 ```{r}
-pdata$shipid %>% plot
-
-```
-
-todo;
-
-- neuraal netwerk
-  -ship destination
-  -time delta
-  
-- meta data toevoegen
-
-
-```{r}
-
-data_mat = as.matrix(pdata[, c(2,3,5,7)])
-
-set.seed(17)
-ind <- sample(2, nrow(data_mat),
-              replace = TRUE, prob = c(0.7, 0.3))
-data.training <- data_mat[ind == 1, c(1,2,4)]
-data.test <- data_mat[ind == 2, c(1,2,4)]
-data.trainingtarget <- data_mat[ind == 1, -c(1,2,4)]
-data.testtarget <- data_mat[ind == 2, -c(1,2,4)]
-
+smp_size <- floor(0.70 * nrow(data))
+train_ind <- sample(seq_len(nrow(data)), size = smp_size)
+train <- data[train_ind, ]
+test <- data[-train_ind, ]
 
 
 ```
 
 
 ```{r}
-model <- keras_model_sequential()
-model %>%
-  layer_dense(units = 1, activation = 'relu',
-              input_shape = ncol(data.training))
-summary(model)
-
-
-
+train_control <- trainControl(method="repeatedcv",repeats = 3)
 ```
 
-```{r}
-model %>% compile(
-  loss = 'mse',
-  optimizer = "adam",
-  metrics = 'accuracy'
-)
-
-```
-
-
+Building the neural network for the longitude.
 
 ```{r}
 
-history <- model %>% fit(
-  x = data.training,
-  y = data.trainingtarget,
-  epochs = 10,
-  batch_size = 5,
-  validation_split = 0.3,
-  verbose = 1
-)
+nn_Lon <- train(endlongitude ~ startLongitude + startLatitude + timedelta ,
+               data = train,
+               trControl = train_control,
+               method = "nnet", 
+               linout = TRUE)
+nn_Lon
 
 ```
+Building the neural network for the latitude
 
 ```{r}
-plot(history)
+nn_Lat <- train(endlatitude ~ startLongitude + startLatitude + timedelta ,
+                data = train,
+                trControl = train_control,
+                method = "nnet", 
+                linout = TRUE)
+nn_Lat
+```
+
+Now we can evaluate the model on test data, and see the predictions.
+
+```{r}
+# Evaluating the models on test data
+
+pred_nn_lon <- predict(nn_Lon,newdata = test)
+pred_nn_lat <- predict(nn_Lat,newdata = test)
+
+res_nn= cbind(pred_nn_lon,pred_nn_lon,test$endlongitude,test$endlatitude)
+colnames(res_nn) = c("Pred_Lon","Pred_Lat","actual_Lon","actual_Lat")
+
+
 ```
 
 
-
-
-
-
-
-
-
-
+```{r}
+res_nn
+```
 
 
 
