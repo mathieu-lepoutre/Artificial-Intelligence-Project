@@ -219,7 +219,7 @@ The goal is to accurately check if the model can predict a correct destination l
 will be achieved by training the model on the thousands of trajects that happened in the past.
 
 
-This prediction can be usefull in many applications and situations.
+This prediction can be useful in many applications and situations.
 
 
 
@@ -234,6 +234,7 @@ str(data)
 
 summary(data)
 ```
+
 
 First we need to split the dataset into training and test sets The model will be trained on the trained set, and the accuracy will be tested on the test set.
 Then the training control will be defined.
@@ -305,7 +306,6 @@ colnames(res_nn) = c("Pred_Lon","Pred_Lat","actual_Lon","actual_Lat")
 ```{r}
 res_nn
 ```
-
 
 
 
