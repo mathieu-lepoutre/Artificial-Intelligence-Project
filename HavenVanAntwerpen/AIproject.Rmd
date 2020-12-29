@@ -223,7 +223,7 @@ dim(pdata)
 
 str(pdata)
 
-summaryp(data)
+summary(data)
 ```
 
 ## Neural networks
@@ -299,7 +299,50 @@ colnames(res_nn) = c("Pred_Lon","Pred_Lat","actual_Lon","actual_Lat")
 res_nn
 ```
 
+The next neural network will be the K-nearest neighbor algorithm network.
+First we train the model on the training set.
 
+
+```{r}
+
+model_Lon <- train(endlongitude ~ startLongitude + startLatitude + timedelta ,
+                   data = train,
+                   trControl = train_control,
+                   method = "knn", 
+                   preProcess = c("center","scale"), tuneLength = 20)
+model_Lon
+```
+
+
+```{r}
+model_Lat <- train(endlatitude ~ startLongitude + startLatitude + timedelta ,
+                   data = train,
+                   trControl = train_control,
+                   method = "knn", 
+                   preProcess = c("center","scale"), tuneLength = 20)
+model_Lat
+```
+
+Now let's evaluate the models on the test data.
+
+```{r}
+
+pred_lon <- predict(model_Lon,newdata = test)
+pred_lat <- predict(model_Lat,newdata = test)
+
+res_knn= cbind(pred_lon,pred_lat,test$endlongitude,test$endlatitude)
+colnames(res_knn) = c("Pred_Lon","Pred_Lat","actual_Lon","actual_Lat")
+```
+
+
+```{r}
+res_knn
+```
+
+
+The next goal is to make neural networks to accurately predict the time delta between a ship's startings positioning and a ship's destination positioning.
+
+The time delta in this context is the time travelled between the two places.
 
 
 
