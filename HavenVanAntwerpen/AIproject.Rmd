@@ -21,7 +21,7 @@ library(ggplot2)
 library(caret)
 
 
-use_python("C:\\Program Files\\Python37")
+use_python("/usr/local/bin/python")
 ```
 
 ```{python}
