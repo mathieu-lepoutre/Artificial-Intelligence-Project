@@ -342,7 +342,7 @@ res_knn
 
 The next goal is to make neural networks to accurately predict the time delta between a ship's startings positioning and a ship's destination positioning.
 
-The time delta in this context is the time travelled between the two places.
+The time delta in this context is the time traveled between the two places.
 
 
 
