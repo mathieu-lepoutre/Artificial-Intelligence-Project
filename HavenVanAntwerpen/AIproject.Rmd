@@ -345,6 +345,40 @@ The next goal is to make neural networks to accurately predict the time delta be
 The time delta in this context is the time traveled between the two places.
 
 
+First we build the neural network.
+
+```{r}
+
+nn_time <- train(timedelta ~ startLongitude + startLatitude + endlatitude + endlongitude ,
+               data = train,
+               trControl = train_control,
+               method = "nnet", 
+               linout = TRUE)
+nn_time
+
+```
+
+
+Now we can evaluate the model on test data, and see the predictions.
+
+```{r}
+# Evaluating the models on test data
+
+pred_nn_time <- predict(nn_time,newdata = test)
+
+
+res_nn= cbind(pred_nn_time,test$timedelta)
+colnames(res_nn) = c("Pred_time","actual_time")
+
+
+```
+
+
+```{r}
+res_nn
+```
+
+
 
 
 
