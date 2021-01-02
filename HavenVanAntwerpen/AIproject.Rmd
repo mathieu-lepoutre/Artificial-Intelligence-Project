@@ -378,7 +378,41 @@ colnames(res_nn) = c("Pred_time","actual_time")
 res_nn
 ```
 
+K-nearest neighbor algorithm network:
 
+
+```{r}
+
+model_knn_timedelta <- train(timedelta ~ startLongitude + startLatitude + endlatitude + endlongitude ,
+                   data = train,
+                   trControl = train_control,
+                   method = "knn", 
+                   preProcess = c("center","scale"), tuneLength = 20)
+model_knn_timedelta
+```
+
+
+
+Now let's evaluate the models on the test data.
+
+```{r}
+
+pred_time <- predict(model_knn_timedelta,newdata = test)
+
+
+times_knn= cbind(pred_time,test$timedelta)
+colnames(times_knn) = c("Pred_time","actual_time")
+```
+
+
+```{r}
+times_knn
+```
+
+
+```{r}
+
+```
 
 
 
