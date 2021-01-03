@@ -1,7 +1,7 @@
 ---
-title: "markdown"
+title: "AI project"
 author: "Mathieu Lepoutre"
-date: "28-11-2020"
+date: "2020 - 2021 "
 output: html_document
 ---
 
