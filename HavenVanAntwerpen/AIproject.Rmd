@@ -34,31 +34,27 @@ from IPython.display import Image
 ## Predicting a ship's destination based on it's beginning's latitude and longitude.
 
 Wouldn't it be great if we could predict a ship's destination ?
-
 In this paper I will try to tackle this challenge.
 
 For input there is an unprocessed dataset containing a ship's ID and it's total trajectory.
-The data isn't always that accurate since a ship's owner will sometimes cancel a ship's beacon.
+The data isn't always that accurate since a ship's owner will sometimes cancel its ship's beacon, meaning it won't send out location data anymore.
 
-First the data will be processed, this challenge is made up of two steps. I made a paint picture to explain it visually.
+This project is divided into two parts.
 
-The first step is to split the data based on a time delta. 
+First the data will be processed. This will be done through two steps.The first step is to split the data based on a time delta. 
 
-You have to ask yourself these question, "why is the time difference between two registries sometimes a big difference ?" and  "When would an owner stop the beacon from sending location data ?"
+You have to ask yourself these question, "why is the time difference between two registries sometimes a big difference ?" and  "When would an owner stop the beacon from sending location data ?" The answer is that the owner will stop the transmitting of the beacon when he is asleep or docked. This ofcourse makes the data inaccurate. That's why I first split the dataset on a timedelta. This will make sure that the total trajectory of a ship will be split into real trajectories.
 
-The answer is that the owner will stop the transmitting of the beacon when he is asleep or docked. This ofcourse makes the data inaccurate. That's why I first split the dataset on a timedelta. 
-
-The total trajectory of a ship will be split in real trajectories.
-
-The next split will be done based on how fast the ship is moving. If it is moving below a certain threshold (this can't be zero because the current can't be dismissed), the ship most likely has stopped and reached it's destination.
+The next split will be done based on how fast the ship is moving. If it is moving below a certain threshold (this can't be zero because the current can't be dismissed), the ship most likely has stopped and reached it's destination, meaning we have to split on this point.
 
 
-
-To train my neural network I need to be sure the data is in the correct format.
-The preferable format is the ship's start position (latitude and longitude), the ship's end position (latitude and longitude) and the time delta between the two positions.
-
+The second part is training a neural network to predict a ship's end destination and time travelled between start and end destination.
+To train this neural network, I need to be sure the data is in the correct format.
+The preferable format is the ship's start position (latitude and longitude), the ship's end position (latitude and longitude) and the time delta between the two positions. 
 
 ## Processing the unprocessed data
+
+Disclaimer; Please compile the first part of this process through the notebook.ipynb file, in a visual studio code environment. I put the code here for readability, but the python code will not compile correctly in an R studio environment.
 
 ```{python}
 unprocessed = pd.read_csv("schipsdataset.csv",sep=';')
@@ -202,10 +198,9 @@ sdata.head(10)
 sdata.to_csv(r'processeddata.csv',sep='\t', index=False)
 ```
 
-The data has now been processed.
+The data has now been processed. From here on the code will compile in R studio.
 
 Each ship's route is now a single row, with its ID, starting latitude & longitude and its end latitude & longitude. The time delta between two destinations is also included.
-
 
 Now it's time to start exploring neural networks.
 
@@ -232,6 +227,7 @@ First we need to split the dataset into training and test sets. The model will b
 The training control needs to be defined.
 
 There are lots of neural networks. The first one is the nnet neural network.
+A neural network classifier is a software system that predicts the value of a categorical value. 
 
 By setting the seed, the partition will be reproducible.
 
@@ -254,7 +250,7 @@ test <- pdata[-train_ind, ]
 
 
 ```{r}
-train_control <- trainControl(method="repeatedcv",repeats = 3)
+train_control <- trainControl(method="repeatedcv", repeats = 3)
 ```
 
 Building the neural network for the longitude.
@@ -269,6 +265,7 @@ nn_Lon <- train(endlongitude ~ startLongitude + startLatitude + timedelta ,
 nn_Lon
 
 ```
+
 Building the neural network for the latitude
 
 ```{r}
@@ -279,6 +276,9 @@ nn_Lat <- train(endlatitude ~ startLongitude + startLatitude + timedelta ,
                 linout = TRUE)
 nn_Lat
 ```
+
+
+
 
 Now we can evaluate the model on test data, and see the predictions.
 
@@ -300,6 +300,11 @@ res_nn
 ```
 
 The next neural network will be the K-nearest neighbor algorithm network.
+This network is a supervised machine learning algorithm.
+KNN works by finding the distances between a query and all the examples in the data, selecting the specified number examples (K) closest to the query, then votes for the most frequent label or averages the labels.
+
+An analogy for KNN i; "show me your friends, and I'll tell you who you are".
+
 First we train the model on the training set.
 
 
@@ -345,7 +350,7 @@ The next goal is to make neural networks to accurately predict the time delta be
 The time delta in this context is the time traveled between the two places.
 
 
-First we build the neural network.
+First we build the nnet neural network.
 
 ```{r}
 
@@ -409,10 +414,11 @@ colnames(times_knn) = c("Pred_time","actual_time")
 times_knn
 ```
 
+Conclusion:
 
-```{r}
+Through nnet and KNN it was possible to accurately predict a ship's destination positioning by training the model on past trajectories.
+The time delta prediction was not as accurace. I believe this is because there's a lot more variables in play when predicting the time delta.
 
-```
 
 
 
