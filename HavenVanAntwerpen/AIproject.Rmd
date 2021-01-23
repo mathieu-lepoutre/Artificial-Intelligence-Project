@@ -37,7 +37,7 @@ Wouldn't it be great if we could predict a ship's destination ?
 In this paper I will try to tackle this challenge.
 
 For input there is an unprocessed dataset containing a ship's ID and it's total trajectory.
-The data isn't always that accurate since a ship's owner will sometimes cancel its ship's beacon, meaning it won't send out location data anymore.
+The data isn't always that accurate since a ship's owner will sometimes cancel its ship's beacon, meaning it won't send out its location data.
 
 This project is divided into two parts.
 
@@ -48,13 +48,13 @@ You have to ask yourself these question, "why is the time difference between two
 The next split will be done based on how fast the ship is moving. If it is moving below a certain threshold (this can't be zero because the current can't be dismissed), the ship most likely has stopped and reached it's destination, meaning we have to split on this point.
 
 
-The second part is training a neural network to predict a ship's end destination and time travelled between start and end destination.
+The second part is training a neural network to predict a ship's end destination and time traveled between start and end destination.
 To train this neural network, I need to be sure the data is in the correct format.
 The preferable format is the ship's start position (latitude and longitude), the ship's end position (latitude and longitude) and the time delta between the two positions. 
 
 ## Processing the unprocessed data
 
-Disclaimer; Please compile the first part of this process through the notebook.ipynb file, in a visual studio code environment. I put the code here for readability, but the python code will not compile correctly in an R studio environment.
+Disclaimer; Please compile the first part of this process through the "notebook.ipynb" file, in a visual studio code environment. I put the code here for readability, but the python code will not compile correctly in an R studio environment.
 
 ```{python}
 unprocessed = pd.read_csv("schipsdataset.csv",sep=';')
@@ -62,12 +62,6 @@ unprocessed = pd.read_csv("schipsdataset.csv",sep=';')
 
 ```{python}
 unprocessed.head(10)
-```
-
-This visually explains the steps I'm going to partake.
-
-```{python}
-Image(filename='preprocessing.png')
 ```
 
 Changeable variables to alter the output file. If you believe the time delta when the owner puts off the beacon is shorter or longer, this can be adjusted here. This can also be done with the speed delta.
@@ -105,7 +99,6 @@ for d in fileData:
   
 List.append(data[1])
 ```
-
 
 
 ```{python}
@@ -177,13 +170,11 @@ with open('output.csv', mode='w') as output_file:
         output_writer.writerow(data)
 ```
 
-
 The dataset has been splitted and it is now time to delete null values and place column names.
 
 ```{python}
 sdata = pd.read_csv("output.csv",sep=',',names=["shipid","routeid","startLongitude","startLatitude","endlongitude","endlatitude","timedelta"])
 ```
-
 
 ```{python}
 sdata=sdata[sdata.timedelta!=0]
@@ -204,12 +195,8 @@ Each ship's route is now a single row, with its ID, starting latitude & longitud
 
 Now it's time to start exploring neural networks.
 
-The goal is to accurately predict a correct destination's latitude and longitude, based on the start latitude and longitude. This
+The goal is to hopefully accurately predict a correct destination's latitude and longitude, based on the start latitude and longitude. This
 will be achieved by training the model on the thousands of trajects that happened in the past.
-
-
-This prediction can be useful in many applications and situations.
-
 
 ```{r}
 pdata <- read.csv("processeddata.csv", sep = "")
@@ -230,7 +217,6 @@ There are lots of neural networks. The first one is the nnet neural network.
 A neural network classifier is a software system that predicts the value of a categorical value. 
 
 By setting the seed, the partition will be reproducible.
-
 
 ```{r}
 pdata = pdata[1:10000,]
@@ -277,9 +263,6 @@ nn_Lat <- train(endlatitude ~ startLongitude + startLatitude + timedelta ,
 nn_Lat
 ```
 
-
-
-
 Now we can evaluate the model on test data, and see the predictions.
 
 ```{r}
@@ -300,13 +283,13 @@ res_nn
 ```
 
 The next neural network will be the K-nearest neighbor algorithm network.
-This network is a supervised machine learning algorithm.
-KNN works by finding the distances between a query and all the examples in the data, selecting the specified number examples (K) closest to the query, then votes for the most frequent label or averages the labels.
 
-An analogy for KNN i; "show me your friends, and I'll tell you who you are".
+This network is a supervised machine learning algorithm.
+KNN works by finding the distances between a query and all the examples in the data, selecting the specified number examples (K) closest to the query, then it votes for the most frequent label or the averages of the labels.
+
+An analogy for KNN is; "show me your friends, and I'll tell you who you are".
 
 First we train the model on the training set.
-
 
 ```{r}
 
@@ -345,7 +328,7 @@ res_knn
 ```
 
 
-The next goal is to make neural networks to accurately predict the time delta between a ship's startings positioning and a ship's destination positioning.
+The next goal is to make neural networks to accurately predict the time delta between a ship's starting positioning and a ship's destination positioning.
 
 The time delta in this context is the time traveled between the two places.
 
@@ -385,7 +368,6 @@ res_nn
 
 K-nearest neighbor algorithm network:
 
-
 ```{r}
 
 model_knn_timedelta <- train(timedelta ~ startLongitude + startLatitude + endlatitude + endlongitude ,
@@ -395,7 +377,6 @@ model_knn_timedelta <- train(timedelta ~ startLongitude + startLatitude + endlat
                    preProcess = c("center","scale"), tuneLength = 20)
 model_knn_timedelta
 ```
-
 
 
 Now let's evaluate the models on the test data.
@@ -416,8 +397,12 @@ times_knn
 
 Conclusion:
 
+The goal of this project was hoping to be able to predict if it was possible to determine a ship's destination and the time traveled in a ship's route.
+
 Through nnet and KNN it was possible to accurately predict a ship's destination positioning by training the model on past trajectories.
-The time delta prediction was not as accurace. I believe this is because there's a lot more variables in play when predicting the time delta.
+The time delta prediction was not as accurate. I believe this is because there's a lot more variables in play when accurately predicting the time.
+
+
 
 
 
