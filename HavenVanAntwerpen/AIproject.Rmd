@@ -54,7 +54,7 @@ The preferable format is the ship's start position (latitude and longitude), the
 
 ## Processing the unprocessed data
 
-Disclaimer; Please compile the first part of this process through the "notebook.ipynb" file, in a visual studio code environment. I put the code here for readability, but the python code will not compile correctly in an R studio environment.
+Disclaimer; Please compile the first part of this process through the "AIproject_Notebook.ipynb" file, in a visual studio code environment. I put the code here for readability, but the python code will not compile correctly in an R studio environment.
 
 ```{python}
 unprocessed = pd.read_csv("schipsdataset.csv",sep=';')
@@ -401,6 +401,8 @@ The goal of this project was hoping to be able to predict if it was possible to 
 
 Through nnet and KNN it was possible to accurately predict a ship's destination positioning by training the model on past trajectories.
 The time delta prediction was not as accurate. I believe this is because there's a lot more variables in play when accurately predicting the time.
+
+
 
 
 
