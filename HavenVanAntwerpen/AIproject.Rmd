@@ -24,12 +24,16 @@ library(caret)
 use_python("/usr/local/bin/python")
 ```
 
+
+
 ```{python}
 import datetime
 import csv
 import pandas as pd
 from IPython.display import Image
 ```
+
+#AI Project 2020-2021
 
 ## Predicting a ship's destination based on it's beginning's latitude and longitude.
 
@@ -52,9 +56,11 @@ The second part is training a neural network to predict a ship's end destination
 To train this neural network, I need to be sure the data is in the correct format.
 The preferable format is the ship's start position (latitude and longitude), the ship's end position (latitude and longitude) and the time delta between the two positions. 
 
-## Processing the unprocessed data
+### Processing the unprocessed data
 
 Disclaimer; Please compile the first part of this process through the "AIproject_Notebook.ipynb" file, in a visual studio code environment. I put the code here for readability, but the python code will not compile correctly in an R studio environment.
+
+
 
 ```{python}
 unprocessed = pd.read_csv("schipsdataset.csv",sep=';')
@@ -208,7 +214,9 @@ str(pdata)
 summary(data)
 ```
 
-## Neural networks
+### Neural networks
+
+#### Predicting the ship's destination
 
 First we need to split the dataset into training and test sets. The model will be trained on the trained set, and then the model can start predicting on the test set.
 The training control needs to be defined.
@@ -327,6 +335,7 @@ colnames(res_knn) = c("Pred_Lon","Pred_Lat","actual_Lon","actual_Lat")
 res_knn
 ```
 
+#### Predicting the time delta
 
 The next goal is to make neural networks to accurately predict the time delta between a ship's starting positioning and a ship's destination positioning.
 
@@ -345,7 +354,6 @@ nn_time <- train(timedelta ~ startLongitude + startLatitude + endlatitude + endl
 nn_time
 
 ```
-
 
 Now we can evaluate the model on test data, and see the predictions.
 
@@ -399,8 +407,11 @@ Conclusion:
 
 The goal of this project was hoping to be able to predict if it was possible to determine a ship's destination and the time traveled in a ship's route.
 
-Through nnet and KNN it was possible to accurately predict a ship's destination positioning by training the model on past trajectories.
-The time delta prediction was not as accurate. I believe this is because there's a lot more variables in play when accurately predicting the time.
+Through nnet and KNN it was possible to accurately predict a ship's destination positioning. This was done through training the model on past trajectories.
+
+The time delta has also been predicted, but this was not as accurate as the ship's destination positioning.
+
+
 
 
 
