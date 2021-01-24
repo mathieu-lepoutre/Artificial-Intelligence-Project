@@ -21,21 +21,21 @@ library(ggplot2)
 library(caret)
 
 
-use_python("/usr/local/bin/python")
 ```
 
 
 
-```{python}
+```{python eval=FALSE}
 import datetime
 import csv
 import pandas as pd
 from IPython.display import Image
 ```
 
-#AI Project 2020-2021
+# AI Project 2020-2021
 
-## Predicting a ship's destination based on it's beginning's latitude and longitude.
+## Hoping to predict a ship's destination and its trajectory time delta.
+
 
 Wouldn't it be great if we could predict a ship's destination ?
 In this paper I will try to tackle this challenge.
@@ -62,42 +62,42 @@ Disclaimer; Please compile the first part of this process through the "AIproject
 
 
 
-```{python}
+```{python eval=FALSE}
 unprocessed = pd.read_csv("schipsdataset.csv",sep=';')
 ```
 
-```{python}
+```{python eval=FALSE}
 unprocessed.head(10)
 ```
 
 Changeable variables to alter the output file. If you believe the time delta when the owner puts off the beacon is shorter or longer, this can be adjusted here. This can also be done with the speed delta.
 
-```{python}
+```{python eval=FALSE}
 timedelta = 36000 #1 hour
 speedDelta = 2     #2 meter per second
 ```
 
 
 
-```{python}
+```{python eval=FALSE}
 f = open("schipsdataset.csv")
 ```
 
-```{python}
+```{python eval=FALSE}
 fileData = f.readlines()
 List = []
 outputList = []
 ```
 
 
-```{python}
+```{python eval=FALSE}
 def getTime(tuple):
     return (tuple[0]*60) + tuple[1]
 ```
 
 
 
-```{python}
+```{python eval=FALSE}
 data = []
 for d in fileData:
     temp = d.replace(";",",")
@@ -107,7 +107,7 @@ List.append(data[1])
 ```
 
 
-```{python}
+```{python eval=FALSE}
 def splitList(List):
     if(len(List)<1):
         return 0
@@ -149,7 +149,7 @@ def splitList(List):
 
 
 
-```{python}
+```{python eval=FALSE}
 for i in range(2,len(data)):
     time1 = datetime.datetime.strptime(List[len(List)-1][1], '%Y-%m-%d %H:%M:%S.%f')
     time2 = datetime.datetime.strptime(data[i][1], '%Y-%m-%d %H:%M:%S.%f')
@@ -164,12 +164,12 @@ for i in range(2,len(data)):
 ```
 
 
-```{python}
+```{python eval=FALSE}
 List.append(data[i])
 ```
 
 
-```{python}
+```{python eval=FALSE}
 with open('output.csv', mode='w') as output_file:
     output_writer = csv.writer(output_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     for data in outputList:        
@@ -178,20 +178,20 @@ with open('output.csv', mode='w') as output_file:
 
 The dataset has been splitted and it is now time to delete null values and place column names.
 
-```{python}
+```{python eval=FALSE}
 sdata = pd.read_csv("output.csv",sep=',',names=["shipid","routeid","startLongitude","startLatitude","endlongitude","endlatitude","timedelta"])
 ```
 
-```{python}
+```{python eval=FALSE}
 sdata=sdata[sdata.timedelta!=0]
 sdata=sdata[sdata.timedelta>0]
 ```
 
-```{python}
+```{python eval=FALSE}
 sdata.head(10)
 ```
 
-```{python}
+```{python eval=FALSE}
 sdata.to_csv(r'processeddata.csv',sep='\t', index=False)
 ```
 
@@ -210,8 +210,6 @@ pdata <- read.csv("processeddata.csv", sep = "")
 dim(pdata)
 
 str(pdata)
-
-summary(data)
 ```
 
 ### Neural networks
@@ -229,7 +227,6 @@ By setting the seed, the partition will be reproducible.
 ```{r}
 pdata = pdata[1:10000,]
 set.seed(1)
-
 ```
 
 
@@ -238,8 +235,6 @@ smp_size <- floor(0.70 * nrow(pdata))
 train_ind <- sample(seq_len(nrow(pdata)), size = smp_size)
 train <- pdata[train_ind, ]
 test <- pdata[-train_ind, ]
-
-
 ```
 
 
@@ -250,7 +245,6 @@ train_control <- trainControl(method="repeatedcv", repeats = 3)
 Building the neural network for the longitude.
 
 ```{r}
-
 nn_Lon <- train(endlongitude ~ startLongitude + startLatitude + timedelta ,
                data = train,
                trControl = train_control,
@@ -274,8 +268,6 @@ nn_Lat
 Now we can evaluate the model on test data, and see the predictions.
 
 ```{r}
-# Evaluating the models on test data
-
 pred_nn_lon <- predict(nn_Lon,newdata = test)
 pred_nn_lat <- predict(nn_Lat,newdata = test)
 
@@ -300,7 +292,6 @@ An analogy for KNN is; "show me your friends, and I'll tell you who you are".
 First we train the model on the training set.
 
 ```{r}
-
 model_Lon <- train(endlongitude ~ startLongitude + startLatitude + timedelta ,
                    data = train,
                    trControl = train_control,
@@ -322,7 +313,6 @@ model_Lat
 Now let's evaluate the models on the test data.
 
 ```{r}
-
 pred_lon <- predict(model_Lon,newdata = test)
 pred_lat <- predict(model_Lat,newdata = test)
 
@@ -352,21 +342,16 @@ nn_time <- train(timedelta ~ startLongitude + startLatitude + endlatitude + endl
                method = "nnet", 
                linout = TRUE)
 nn_time
-
 ```
 
 Now we can evaluate the model on test data, and see the predictions.
 
 ```{r}
-# Evaluating the models on test data
-
 pred_nn_time <- predict(nn_time,newdata = test)
 
 
 res_nn= cbind(pred_nn_time,test$timedelta)
 colnames(res_nn) = c("Pred_time","actual_time")
-
-
 ```
 
 
@@ -377,7 +362,6 @@ res_nn
 K-nearest neighbor algorithm network:
 
 ```{r}
-
 model_knn_timedelta <- train(timedelta ~ startLongitude + startLatitude + endlatitude + endlongitude ,
                    data = train,
                    trControl = train_control,
@@ -390,7 +374,6 @@ model_knn_timedelta
 Now let's evaluate the models on the test data.
 
 ```{r}
-
 pred_time <- predict(model_knn_timedelta,newdata = test)
 
 
